@@ -1,5 +1,7 @@
 # Subst
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/bedag/subst)](https://goreportcard.com/report/github.com/bedag/subst)
+
 A simple extension over kustomize, which allows further variable substitution and introduces simplified yet strong secrets management (for multi tenancy use-cases). Extends the functionality of kustomize for ArgoCD users.
 
 ## Functionality
