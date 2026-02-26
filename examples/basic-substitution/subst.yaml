@@ -1,0 +1,11 @@
+settings:
+  app:
+    name: "my-app"
+    version: "1.0.0"
+    replicas: 3
+  cluster:
+    name: "production"
+    region: "us-west-2"
+environment:
+  database_url: "postgres://prod-db:5432/app"
+  log_level: "info"

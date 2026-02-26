@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .settings.app.name }}"
+  labels:
+    app: "{{ .settings.app.name }}"
+    version: "{{ .settings.app.version }}"
+spec:
+  replicas: "{{ .settings.app.replicas }}"
+  selector:
+    matchLabels:
+      app: "{{ .settings.app.name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .settings.app.name }}"
+    spec:
+      containers:
+      - name: app
+        image: "nginx:{{ .settings.app.version }}"
+        env:
+        - name: DATABASE_URL
+          value: "{{ .environment.database_url }}"
+        - name: LOG_LEVEL
+          value: "{{ .environment.log_level }}"
+        - name: CLUSTER_NAME
+          value: "{{ .settings.cluster.name }}"

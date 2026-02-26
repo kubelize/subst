@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .settings.app.name }}-config"
+  labels:
+    app: "{{ .settings.app.name }}"
+data:
+  cluster.name: "{{ .settings.cluster.name }}"
+  cluster.region: "{{ .settings.cluster.region }}"
+  app.version: "{{ .settings.app.version }}"
+  database.url: "{{ .environment.database_url }}"

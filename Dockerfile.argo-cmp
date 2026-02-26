@@ -1,0 +1,27 @@
+FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.23 as builder
+
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+
+WORKDIR /app/
+ADD . .
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -ldflags="-w -s" -o subst ./subst
+
+
+FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine:latest
+ENV ARGOCD_EXEC_TIMEOUT=90s
+COPY --from=builder /app/subst/subst /usr/local/bin/subst
+COPY argocd-cmp/cmp.yaml /home/argocd/cmp-server/config/plugin.yaml
+COPY argocd-cmp/entrypoint.sh /entrypoint.sh
+RUN apk add --no-cache curl bash && \
+    curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash && \
+    mv kustomize /usr/local/bin/ && \
+    curl -sSL "https://github.com/hairyhenderson/gomplate/releases/latest/download/gomplate_linux-amd64" -o /usr/local/bin/gomplate && \
+    chmod +x /usr/local/bin/gomplate && \
+    adduser -H -D -s /bin/bash -G nobody -u 999 argocd && \
+    chmod +x /entrypoint.sh && \
+    chmod +x /usr/local/bin/subst
+USER argocd:nobody
+ENTRYPOINT ["/entrypoint.sh"]

@@ -1,0 +1,11 @@
+FROM alpine:latest AS gomplate
+RUN apk add --no-cache curl && \
+    curl -sSL "https://github.com/hairyhenderson/gomplate/releases/latest/download/gomplate_linux-amd64" -o /gomplate && \
+    chmod +x /gomplate
+
+FROM gcr.io/distroless/static:nonroot
+WORKDIR /
+COPY subst /subst
+COPY --from=gomplate /gomplate /usr/local/bin/gomplate
+USER nonroot:nonroot
+ENTRYPOINT ["/subst"]

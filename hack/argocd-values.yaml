@@ -1,0 +1,71 @@
+# Values to install ArgoCD with subst
+# Chart Reference: https://artifacthub.io/packages/helm/argo/argo-cd
+repoServer:
+  volumes:
+  - emptyDir: {}
+    name: subst-tmp
+  - emptyDir: {}
+    name: env-tmp
+  - name: env-plugin
+    configMap:
+      name: dump-data
+      items:
+      - key: plugin.yaml
+        path: plugin.yaml
+  extraContainers:
+  - name: cmp-env
+    command: [/var/run/argocd/argocd-cmp-server]
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    securityContext: 
+      runAsUser: 999
+      runAsGroup: 999
+      runAsNonRoot: true
+      privileged: false
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      seccompProfile:
+        type: RuntimeDefault
+      readOnlyRootFilesystem: true
+    volumeMounts:
+      - mountPath: /var/run/argocd
+        name: var-files
+      - mountPath: /home/argocd/cmp-server/plugins
+        name: plugins
+      # Custom Plugin mount  
+      - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+        subPath: plugin.yaml
+        name: env-plugin
+      # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps
+      # mitigate path traversal attacks.
+      - mountPath: /tmp
+        name: env-tmp
+  - name: cmp-subst
+    command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
+    image: ghcr.io/bedag/subst-cmp:local
+    imagePullPolicy: Never
+    securityContext: 
+      runAsUser: 999
+      runAsGroup: 999
+      runAsNonRoot: true
+      privileged: false
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      seccompProfile:
+        type: RuntimeDefault
+      readOnlyRootFilesystem: true
+    volumeMounts:
+      - mountPath: /var/run/argocd
+        name: var-files
+      - mountPath: /home/argocd/cmp-server/plugins
+        name: plugins
+      # Custom Plugin mount  
+      #- mountPath: /home/argocd/cmp-server/config/plugin.yaml
+      #  subPath: plugin.yaml
+      #  name: subst-plugin
+      - mountPath: /tmp
+        name: subst-tmp

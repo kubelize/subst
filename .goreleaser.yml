@@ -1,0 +1,193 @@
+project_name: subst
+env:
+  - COSIGN_EXPERIMENTAL=false
+  - GO111MODULE=on
+before:
+  hooks:
+    - go mod download
+gomod:
+  proxy: true
+builds:
+  - main: subst/main.go
+    binary: subst
+    env:
+      - CGO_ENABLED=0
+    goarch:
+      - amd64
+    goos:
+      - linux
+    flags:
+      - -trimpath
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    ldflags:
+      - >-
+        -X github.com/bedag/subst/subst/cmd.Version={{ .Tag }}
+        -X github.com/bedag/subst/subst/cmd.GitCommit={{ .Commit }}
+        -X github.com/bedag/subst/subst/cmd.BuildDate={{ .Date }}
+release:
+  footer: |
+    **Full Changelog**: https://github.com/bedag/{{ .ProjectName }}/compare/{{ .PreviousTag }}...{{ .Tag }}
+    
+    * * *
+
+    **Docker Images**
+    - `ghcr.io/bedag/{{ .ProjectName }}:{{ .Tag }}`
+    - `ghcr.io/bedag/{{ .ProjectName }}-cmp:{{ .Tag }}`
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+dockers:
+  - image_templates: 
+      - "ghcr.io/bedag/{{ .ProjectName }}:{{ .Tag }}"
+      - "ghcr.io/bedag/{{ .ProjectName }}:latest"
+    dockerfile: Dockerfile.goreleaser
+    goos: linux
+    goarch: amd64
+    use: buildx
+    skip_push: false
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.description=substitute your kustomize files"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}-cmp"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.vendor=Bedag"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+      - "--label=org.opencontainers.image.source=https://github.com/bedag/subst"
+      - "--label=org.opencontainers.image.authors=Bedag"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/bedag/subst/main/README.md"
+      - "--label=io.artifacthub.package.logo-url=https://github.com/bedag/subst/raw/main/img/subst.png"
+      - "--label=io.artifacthub.package.license=Apache-2.0"
+  #- image_templates: [ "ghcr.io/bedag/{{ .ProjectName }}:{{ .Tag }}" ]
+  #  dockerfile: Dockerfile
+  #  goos: linux
+  #  goarch: arm64
+  #  use: buildx
+  #  skip_push: false
+  #  build_flag_templates:
+  #    - --platform=linux/arm64 
+  #    - "--label=org.opencontainers.image description=substitute your kustomize files"
+  #    - "--label=o rg.opencontainers.image.created={{.Date}}"
+  #    - "--label=org.opencontainers.image.   name={{.ProjectName}}-cmp"
+  #    - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  #    - "--label=org.opencontainers.image.version={{.Version}}"
+  #    - "--label=org.opencontainers.image.source={{.GitURL}}"
+  #    - "--label=org.opencontainers.image.vendor=Bedag"
+  #    - "--label=org.opencontainers.image.licenses=Apache-2.0"
+  #    - "--label=org.opencontainers.image.source=https://github.com/bedag/subst"
+  #    - "--label=org.opencontainers.image.authors=Bedag"
+  #    - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/bedag/subst/main/README.md"
+  #    - "--label=io.artifacthub.package.logo-url=https://github.com/bedag/subst/raw/main/img/subst.png"
+  #    - "--label=io.artifacthub.package.license=Apache-2.0"
+  - image_templates: 
+    - "ghcr.io/bedag/{{ .ProjectName }}-cmp:{{ .Tag }}"
+    - "ghcr.io/bedag/{{ .ProjectName }}-cmp:latest"
+    dockerfile: argocd-cmp/Dockerfile.goreleaser
+    goos: linux
+    goarch: amd64
+    use: buildx
+    skip_push: false
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.description=substitute your kustomize files (ArgoCD Plugin)"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}-cmp"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}" 
+      - "--label=org.opencontainers.image.source={{.GitURL}}"  
+      - "--label=org.opencontainers.image.vendor=Bedag"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+      - "--label=org.opencontainers.image.source=https://github.com/bedag/subst"
+      - "--label=org.opencontainers.image.authors=Bedag"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/bedag/subst/main/README.md"
+      - "--label=io.artifacthub.package.logo-url=https://github.com/bedag/subst/raw/main/img/subst.png"
+      - "--label=io.artifacthub.package.license=Apache-2.0"
+    extra_files:
+    - argocd-cmp/cmp.yaml
+    - argocd-cmp/entrypoint.sh
+  #- image_templates: [ "ghcr.io/bedag/{{ .ProjectName }}-cmp:{{ .Tag }}" ]
+  #  dockerfile: Dockerfile.argo-cmp
+  #  goos: linux
+  #  goarch: arm64
+  #  use: buildx
+  #  skip_push: false
+  #  build_flag_templates:
+  #    - --platform=linux/arm64
+  #    - "--label=org.opencontainers.image.description=substitute your kustomize files (ArgoCD Plugin)"
+  #    - "--label=org.opencontainers.image.created={{.Date}}"
+  #    - "--label=org.opencontainers.image.name={{.ProjectName}}-cmp"
+  #    - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  #    - "--label=org.opencontainers.image.version={{.Version}}"
+  #    - "--label=org.opencontainers.image.source={{.GitURL}}"
+  #    - "--label=org.opencontainers.image.vendor=Bedag"
+  #    - "--label=org.opencontainers.image.licenses=Apache-2.0"
+  #    - "--label=org.opencontainers.image.source=https://github.com/bedag/subst"
+  #    - "--label=org.opencontainers.image.authors=Bedag"
+  #    - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/bedag/subst/main/README.md"
+  #    - "--label=io.artifacthub.package.logo-url=https://github.com/bedag/subst/raw/main/img/subst.png"
+  #    - "--label=io.artifacthub.package.license=Apache-2.0"
+  #  extra_files:
+  #  - argocd-cmp/cmp.yaml
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+    - '^test:'
+    - '^chore'
+    - 'merge conflict'
+    - Merge pull request
+    - Merge remote-tracking branch
+    - Merge branch
+  groups:
+    - title: Dependency updates
+      regexp: '^.*?(feat|fix)\(deps\)!?:.+$'
+      order: 300
+    - title: 'New Features'
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 100
+    - title: 'Bug fixes'
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 200
+    - title: 'Documentation updates'
+      regexp: ^.*?doc(\([[:word:]]+\))??!?:.+$
+      order: 400
+    - title: 'Build process updates'
+      regexp: ^.*?build(\([[:word:]]+\))??!?:.+$
+      order: 400
+    - title: Other work
+      order: 9999
+sboms:
+  - artifacts: archive
+# signs:
+# - cmd: cosign
+#   args:
+#   - "sign-blob"
+#   - "--output-signature=${signature}"
+#   - "${artifact}"
+#   - "--yes"
+#   artifacts: all
+# docker_signs:
+# - cmd: cosign
+#   artifacts: manifests
+#   output: true
+#   args:
+#   - 'sign'
+#   - "--output-signature=${signature}"
+#   - '${artifact}@${digest}'
+#   - --yes
+#brews:
+#  - tap:
+#      owner: bedag
+#      name: subst
+#      branch: main
+#    license: Apache-2.0
+#    homepage: "github.com/bedag/subst"
+#    description: "subst - Substitution based on Kustomize"
+#    post_install: |
+#      puts '🌈 subst installed 🌈'
