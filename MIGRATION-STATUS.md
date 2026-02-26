@@ -83,7 +83,7 @@ Files in `testing/new/apps/addons/storageclasses/nutanix/*/`:
 
 ## Migration Script
 
-Location: `/Users/dan/Git/bedag/subst/migrate-spruce-to-gomplate.sh`
+Location: `/Users/dan/Git/kubelize/subst/migrate-spruce-to-gomplate.sh`
 
 ### Features
 - Restores files from `.bak` backups before running

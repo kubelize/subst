@@ -7,7 +7,7 @@ echo "Subst Performance Comparison Test"
 echo "================================"
 echo ""
 echo "Comparing:"
-echo "  Old: ghcr.io/bedag/subst:v1.0.1 (render + spruce on testing/legacy)"
+echo "  Old: ghcr.io/kubelize/subst:v1.0.1 (render + spruce on testing/legacy)"
 echo "  New: kubelize/subst-cmp:v1.1.0 (render + gomplate on testing/new)"
 echo ""
 
@@ -26,7 +26,7 @@ NEW_TEST_DIRS=(
 
 # Pull images first
 echo "Pulling Docker images..."
-docker pull ghcr.io/bedag/subst:v1.0.1 >/dev/null 2>&1 || echo "Warning: Could not pull v1.0.1"
+docker pull ghcr.io/kubelize/subst:v1.0.1 >/dev/null 2>&1 || echo "Warning: Could not pull v1.0.1"
 docker pull kubelize/subst-cmp:v1.1.0 >/dev/null 2>&1 || echo "Warning: Could not pull v1.1.0"
 echo ""
 
@@ -39,7 +39,7 @@ run_old_version() {
   for i in $(seq 1 $runs); do
     start=$(date +%s%N)
     docker run --rm -v "$(pwd)/$dir:/workspace" -w /workspace \
-      ghcr.io/bedag/subst:v1.0.1 render . > /dev/null 2>&1 || true
+      ghcr.io/kubelize/subst:v1.0.1 render . > /dev/null 2>&1 || true
     end=$(date +%s%N)
     elapsed=$(( (end - start) / 1000000 ))  # Convert to milliseconds
     total_time=$((total_time + elapsed))

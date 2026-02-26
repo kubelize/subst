@@ -103,7 +103,7 @@ kind-up:
 	@echo "Building kubernetes $${KIND_K8S_VERSION:-v1.25.0}..."
 	@kind create cluster --name $(K3S_NAME) --image kindest/node:$${KIND_K8S_VERSION:-v1.25.0} --wait=120s 
 
-kind-load-image: PLUGIN_IMG = ghcr.io/bedag/subst-cmp:local
+kind-load-image: PLUGIN_IMG = ghcr.io/kubelize/subst-cmp:local
 kind-load-image: docker-build-cmp
 	@echo "Loading image into cluster..."
 	@kind load docker-image ${PLUGIN_IMG} --name $(K3S_NAME)

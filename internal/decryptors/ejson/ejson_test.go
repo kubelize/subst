@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/bedag/subst/internal/decryptors"
+	"github.com/kubelize/subst/internal/decryptors"
 	"github.com/stretchr/testify/assert"
 )
 

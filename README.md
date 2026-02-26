@@ -1,6 +1,6 @@
 # Subst
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/bedag/subst)](https://goreportcard.com/report/github.com/bedag/subst)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kubelize/subst)](https://goreportcard.com/report/github.com/kubelize/subst)
 
 A simple extension over kustomize, which allows further variable substitution and introduces simplified yet strong secrets management (for multi tenancy use-cases). Extends the functionality of kustomize for ArgoCD users.
 
@@ -46,7 +46,7 @@ Install it with the [ArgoCD community chart](https://github.com/argoproj/argo-he
       extraContainers:
       - name: cmp-subst
         args: [/var/run/argocd/argocd-cmp-server]
-        image: ghcr.io/bedag/subst-cmp:v1.0.0
+        image: ghcr.io/kubelize/subst-cmp:v1.0.0
         imagePullPolicy: Always
         securityContext:
           allowPrivilegeEscalation: false
@@ -221,20 +221,20 @@ Verify installation:
 gomplate --version
 ```
 
-**Note:** Docker images (`ghcr.io/bedag/subst` and `ghcr.io/bedag/subst-cmp`) include gomplate - no separate installation needed.
+**Note:** Docker images (`ghcr.io/kubelize/subst` and `ghcr.io/kubelize/subst-cmp`) include gomplate - no separate installation needed.
 
 ### Go
 
 ```bash
-go install github.com/bedag/subst/subst@v1.0.0
+go install github.com/kubelize/subst/subst@v1.0.0
 ```
 
 ### Docker
 
 ```bash
-docker run --rm -it ghcr.io/bedag/subst:v1.0.0 -h
+docker run --rm -it ghcr.io/kubelize/subst:v1.0.0 -h
 ```
 
 ### Github releases
 
-[github.com/bedag/subst/releases](https://github.com/bedag/subst/releases)
+[github.com/kubelize/subst/releases](https://github.com/kubelize/subst/releases)

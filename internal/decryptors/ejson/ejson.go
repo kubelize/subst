@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/Shopify/ejson"
-	"github.com/bedag/subst/internal/decryptors"
+	"github.com/kubelize/subst/internal/decryptors"
 )
 
 const (

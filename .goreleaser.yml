@@ -21,18 +21,18 @@ builds:
     mod_timestamp: '{{ .CommitTimestamp }}'
     ldflags:
       - >-
-        -X github.com/bedag/subst/subst/cmd.Version={{ .Tag }}
-        -X github.com/bedag/subst/subst/cmd.GitCommit={{ .Commit }}
-        -X github.com/bedag/subst/subst/cmd.BuildDate={{ .Date }}
+        -X github.com/kubelize/subst/subst/cmd.Version={{ .Tag }}
+        -X github.com/kubelize/subst/subst/cmd.GitCommit={{ .Commit }}
+        -X github.com/kubelize/subst/subst/cmd.BuildDate={{ .Date }}
 release:
   footer: |
-    **Full Changelog**: https://github.com/bedag/{{ .ProjectName }}/compare/{{ .PreviousTag }}...{{ .Tag }}
+    **Full Changelog**: https://github.com/kubelize/{{ .ProjectName }}/compare/{{ .PreviousTag }}...{{ .Tag }}
     
     * * *
 
     **Docker Images**
-    - `ghcr.io/bedag/{{ .ProjectName }}:{{ .Tag }}`
-    - `ghcr.io/bedag/{{ .ProjectName }}-cmp:{{ .Tag }}`
+    - `ghcr.io/kubelize/{{ .ProjectName }}:{{ .Tag }}`
+    - `ghcr.io/kubelize/{{ .ProjectName }}-cmp:{{ .Tag }}`
 
 checksum:
   name_template: 'checksums.txt'
@@ -41,8 +41,8 @@ snapshot:
   name_template: "{{ .Tag }}-next"
 dockers:
   - image_templates: 
-      - "ghcr.io/bedag/{{ .ProjectName }}:{{ .Tag }}"
-      - "ghcr.io/bedag/{{ .ProjectName }}:latest"
+      - "ghcr.io/kubelize/{{ .ProjectName }}:{{ .Tag }}"
+      - "ghcr.io/kubelize/{{ .ProjectName }}:latest"
     dockerfile: Dockerfile.goreleaser
     goos: linux
     goarch: amd64
@@ -58,12 +58,12 @@ dockers:
       - "--label=org.opencontainers.image.source={{.GitURL}}"
       - "--label=org.opencontainers.image.vendor=Bedag"
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
-      - "--label=org.opencontainers.image.source=https://github.com/bedag/subst"
+      - "--label=org.opencontainers.image.source=https://github.com/kubelize/subst"
       - "--label=org.opencontainers.image.authors=Bedag"
-      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/bedag/subst/main/README.md"
-      - "--label=io.artifacthub.package.logo-url=https://github.com/bedag/subst/raw/main/img/subst.png"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/kubelize/subst/main/README.md"
+      - "--label=io.artifacthub.package.logo-url=https://github.com/kubelize/subst/raw/main/img/subst.png"
       - "--label=io.artifacthub.package.license=Apache-2.0"
-  #- image_templates: [ "ghcr.io/bedag/{{ .ProjectName }}:{{ .Tag }}" ]
+  #- image_templates: [ "ghcr.io/kubelize/{{ .ProjectName }}:{{ .Tag }}" ]
   #  dockerfile: Dockerfile
   #  goos: linux
   #  goarch: arm64
@@ -79,14 +79,14 @@ dockers:
   #    - "--label=org.opencontainers.image.source={{.GitURL}}"
   #    - "--label=org.opencontainers.image.vendor=Bedag"
   #    - "--label=org.opencontainers.image.licenses=Apache-2.0"
-  #    - "--label=org.opencontainers.image.source=https://github.com/bedag/subst"
+  #    - "--label=org.opencontainers.image.source=https://github.com/kubelize/subst"
   #    - "--label=org.opencontainers.image.authors=Bedag"
-  #    - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/bedag/subst/main/README.md"
-  #    - "--label=io.artifacthub.package.logo-url=https://github.com/bedag/subst/raw/main/img/subst.png"
+  #    - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/kubelize/subst/main/README.md"
+  #    - "--label=io.artifacthub.package.logo-url=https://github.com/kubelize/subst/raw/main/img/subst.png"
   #    - "--label=io.artifacthub.package.license=Apache-2.0"
   - image_templates: 
-    - "ghcr.io/bedag/{{ .ProjectName }}-cmp:{{ .Tag }}"
-    - "ghcr.io/bedag/{{ .ProjectName }}-cmp:latest"
+    - "ghcr.io/kubelize/{{ .ProjectName }}-cmp:{{ .Tag }}"
+    - "ghcr.io/kubelize/{{ .ProjectName }}-cmp:latest"
     dockerfile: argocd-cmp/Dockerfile.goreleaser
     goos: linux
     goarch: amd64
@@ -102,15 +102,15 @@ dockers:
       - "--label=org.opencontainers.image.source={{.GitURL}}"  
       - "--label=org.opencontainers.image.vendor=Bedag"
       - "--label=org.opencontainers.image.licenses=Apache-2.0"
-      - "--label=org.opencontainers.image.source=https://github.com/bedag/subst"
+      - "--label=org.opencontainers.image.source=https://github.com/kubelize/subst"
       - "--label=org.opencontainers.image.authors=Bedag"
-      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/bedag/subst/main/README.md"
-      - "--label=io.artifacthub.package.logo-url=https://github.com/bedag/subst/raw/main/img/subst.png"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/kubelize/subst/main/README.md"
+      - "--label=io.artifacthub.package.logo-url=https://github.com/kubelize/subst/raw/main/img/subst.png"
       - "--label=io.artifacthub.package.license=Apache-2.0"
     extra_files:
     - argocd-cmp/cmp.yaml
     - argocd-cmp/entrypoint.sh
-  #- image_templates: [ "ghcr.io/bedag/{{ .ProjectName }}-cmp:{{ .Tag }}" ]
+  #- image_templates: [ "ghcr.io/kubelize/{{ .ProjectName }}-cmp:{{ .Tag }}" ]
   #  dockerfile: Dockerfile.argo-cmp
   #  goos: linux
   #  goarch: arm64
@@ -126,10 +126,10 @@ dockers:
   #    - "--label=org.opencontainers.image.source={{.GitURL}}"
   #    - "--label=org.opencontainers.image.vendor=Bedag"
   #    - "--label=org.opencontainers.image.licenses=Apache-2.0"
-  #    - "--label=org.opencontainers.image.source=https://github.com/bedag/subst"
+  #    - "--label=org.opencontainers.image.source=https://github.com/kubelize/subst"
   #    - "--label=org.opencontainers.image.authors=Bedag"
-  #    - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/bedag/subst/main/README.md"
-  #    - "--label=io.artifacthub.package.logo-url=https://github.com/bedag/subst/raw/main/img/subst.png"
+  #    - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/kubelize/subst/main/README.md"
+  #    - "--label=io.artifacthub.package.logo-url=https://github.com/kubelize/subst/raw/main/img/subst.png"
   #    - "--label=io.artifacthub.package.license=Apache-2.0"
   #  extra_files:
   #  - argocd-cmp/cmp.yaml
@@ -183,11 +183,11 @@ sboms:
 #   - --yes
 #brews:
 #  - tap:
-#      owner: bedag
+#      owner: kubelize
 #      name: subst
 #      branch: main
 #    license: Apache-2.0
-#    homepage: "github.com/bedag/subst"
+#    homepage: "github.com/kubelize/subst"
 #    description: "subst - Substitution based on Kustomize"
 #    post_install: |
 #      puts '🌈 subst installed 🌈'
