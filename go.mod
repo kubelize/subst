@@ -1,4 +1,4 @@
-module github.com/bedag/subst
+module github.com/kubelize/subst
 
 go 1.23.0
 
