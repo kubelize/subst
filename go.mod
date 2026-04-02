@@ -7,7 +7,7 @@ toolchain go1.24.0
 require (
 	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/Shopify/ejson v1.5.4
-	github.com/rs/zerolog v1.33.0
+	github.com/rs/zerolog v1.35.0
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.14.0
