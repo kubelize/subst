@@ -3,14 +3,12 @@ module github.com/kubelize/subst
 go 1.24.0
 
 require (
-	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/Shopify/ejson v1.5.4
 	github.com/rs/zerolog v1.35.0
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.14.0
-	github.com/stretchr/testify v1.10.0
-	go.uber.org/automaxprocs v1.6.0
+	github.com/stretchr/testify v1.11.1
 	gopkg.in/yaml.v3 v3.0.1
 	sigs.k8s.io/kustomize/api v0.21.1
 )
