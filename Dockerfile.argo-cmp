@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.23 as builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.24 AS builder
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
@@ -10,7 +10,7 @@ ADD . .
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -ldflags="-w -s" -o subst ./subst
 
 
-FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine:latest
+FROM alpine:latest
 ENV ARGOCD_EXEC_TIMEOUT=90s
 COPY --from=builder /app/subst/subst /usr/local/bin/subst
 COPY argocd-cmp/cmp.yaml /home/argocd/cmp-server/config/plugin.yaml
